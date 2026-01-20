@@ -21,8 +21,9 @@ Output:
     - data/processed/pbody_proteomics_data.csv
     - logs/01_load_pbody_proteomics.log
 
-Author: Moschou PN and Moya-Cuevas J (migrated from Colab)
+Author: Pepe (migrated from Colab)
 Date: 2026-01-20
+Version: 1.1 (column search by name)
 """
 
 import pandas as pd
@@ -71,7 +72,7 @@ def setup_logging(log_dir):
     logger.addHandler(ch)
     
     logger.info("="*70)
-    logger.info("P-Body Proteomics Data Loader - Script 01")
+    logger.info("P-Body Proteomics Data Loader - Script 01 v1.1")
     logger.info("="*70)
     logger.info(f"Execution started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Log file: {log_file}")
@@ -99,9 +100,82 @@ def validate_input_file(input_file, logger):
     logger.info(f"File size: {file_size:.2f} KB")
 
 
+def find_column_indices(df_raw, logger):
+    """
+    Find column indices by searching multi-level headers.
+    
+    The Excel has a 3-level header structure:
+    - Row 0: "LOG2 RATIO DCP1/GFP" (spanning cols 32-35)
+    - Row 1: Method - "AP" or "PDL" (may have nans for continuation)
+    - Row 2: Condition - "Log2(FC) NS" or "Log2(FC) HS"
+    
+    Parameters:
+    -----------
+    df_raw : pd.DataFrame
+        Raw data from Excel
+    logger : logging.Logger
+        Logger instance
+        
+    Returns:
+    --------
+    dict
+        Dictionary mapping column names to indices
+    """
+    logger.info("Searching for column indices in multi-level headers...")
+    
+    # Extract header rows
+    row1 = df_raw.iloc[1, :].copy()  # Method row (AP/PDL)
+    row2 = df_raw.iloc[2, :].copy()  # Condition row (NS/HS)
+    
+    # Forward fill row1 to handle merged cells (nans)
+    row1_filled = row1.ffill()
+    
+    logger.info("Header structure (after forward fill):")
+    for idx in range(30, 36):
+        logger.info(f"  Col {idx}: Method='{row1_filled.iloc[idx]}', Condition='{row2.iloc[idx]}'")
+    
+    # Search for target columns
+    column_map = {}
+    
+    for idx in range(len(row1_filled)):
+        method = str(row1_filled.iloc[idx]).strip()
+        condition = str(row2.iloc[idx]).strip()
+        
+        # AP Log2(FC) NS
+        if method == 'AP' and 'NS' in condition and 'Log2(FC)' in condition:
+            column_map['AP_NS'] = idx
+            logger.info(f"  ✓ Found AP_NS at column index {idx}")
+        
+        # AP Log2(FC) HS
+        elif method == 'AP' and 'HS' in condition and 'Log2(FC)' in condition:
+            column_map['AP_HS'] = idx
+            logger.info(f"  ✓ Found AP_HS at column index {idx}")
+        
+        # PDL Log2(FC) NS
+        elif method == 'PDL' and 'NS' in condition and 'Log2(FC)' in condition:
+            column_map['PDL_NS'] = idx
+            logger.info(f"  ✓ Found PDL_NS at column index {idx}")
+        
+        # PDL Log2(FC) HS
+        elif method == 'PDL' and 'HS' in condition and 'Log2(FC)' in condition:
+            column_map['PDL_HS'] = idx
+            logger.info(f"  ✓ Found PDL_HS at column index {idx}")
+    
+    # Validate that all columns were found
+    expected_cols = ['AP_NS', 'AP_HS', 'PDL_NS', 'PDL_HS']
+    missing = [col for col in expected_cols if col not in column_map]
+    
+    if missing:
+        logger.error(f"Failed to find columns: {missing}")
+        raise ValueError(f"Could not locate columns: {missing}")
+    
+    logger.info(f"✓ All {len(expected_cols)} columns found successfully")
+    return column_map
+
+
 def load_pbody_data(input_file, logger):
     """
-    Load P-body proteomics data with proper handling of multi-level headers.
+    Load P-body proteomics data with dynamic column search.
     
     Parameters:
     -----------
@@ -118,41 +192,26 @@ def load_pbody_data(input_file, logger):
     logger.info("Reading Excel file...")
     
     try:
-        # Read the file - the actual data headers are in row 2 (0-indexed)
+        # Read the file
         df_raw = pd.read_excel(input_file, sheet_name=0, header=None)
         logger.info(f"Raw data shape: {df_raw.shape}")
         
-        # Extract protein column (column A, index 0) - skip first 2 header rows
-        proteins = df_raw.iloc[2:, 0].reset_index(drop=True)
+        # Find column indices dynamically
+        col_map = find_column_indices(df_raw, logger)
+        
+        # Extract protein column (column A, index 0) - skip first 3 header rows
+        proteins = df_raw.iloc[3:, 0].reset_index(drop=True)
         logger.info(f"Extracted {len(proteins)} protein entries from column A (index 0)")
         
-        # Extract log2FC columns (AG-AJ, indices 32-35)
-        # AG (32): AP Log2(FC) NS
-        # AH (33): AP Log2(FC) HS
-        # AI (34): PDL Log2(FC) NS
-        # AJ (35): PDL Log2(FC) HS
-        log2fc_data = df_raw.iloc[2:, 32:36].reset_index(drop=True)
-        logger.info(f"Extracted log2FC data from columns AG-AJ (indices 32-35)")
-        logger.info(f"  Column 32 (AG): AP Log2(FC) NS")
-        logger.info(f"  Column 33 (AH): AP Log2(FC) HS")
-        logger.info(f"  Column 34 (AI): PDL Log2(FC) NS")
-        logger.info(f"  Column 35 (AJ): PDL Log2(FC) HS")
-        
-        # Create the final dataframe
+        # Extract log2FC columns using found indices
+        logger.info("Extracting log2FC data using found column indices...")
         result = pd.DataFrame({
             'protein': proteins,
-            'AP_NS': log2fc_data.iloc[:, 0],   # Column AG (index 32)
-            'AP_HS': log2fc_data.iloc[:, 1],   # Column AH (index 33)
-            'PDL_NS': log2fc_data.iloc[:, 2],  # Column AI (index 34)
-            'PDL_HS': log2fc_data.iloc[:, 3]   # Column AJ (index 35)
+            'AP_NS': df_raw.iloc[3:, col_map['AP_NS']].reset_index(drop=True),
+            'AP_HS': df_raw.iloc[3:, col_map['AP_HS']].reset_index(drop=True),
+            'PDL_NS': df_raw.iloc[3:, col_map['PDL_NS']].reset_index(drop=True),
+            'PDL_HS': df_raw.iloc[3:, col_map['PDL_HS']].reset_index(drop=True)
         })
-        
-        # Remove the row that contains 'protein' as a value (header row)
-        before_filter = len(result)
-        result = result[result['protein'] != 'protein'].copy()
-        after_filter = len(result)
-        if before_filter != after_filter:
-            logger.info(f"Removed {before_filter - after_filter} header row(s)")
         
         # Convert log2FC columns to numeric (handle any non-numeric values)
         logger.info("Converting log2FC columns to numeric...")
@@ -306,6 +365,7 @@ def main():
     # Setup logging
     logger = setup_logging(log_dir)
     logger.info(f"Project directory: {project_dir}")
+    logger.info("Version: 1.1 (dynamic column search with forward fill)")
     
     try:
         # Validate input
