@@ -1,44 +1,99 @@
 # Python
+*.pyc
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# Environment
+.env
+.venv
 env/
 venv/
-*.egg-info/
-dist/
-build/
+ENV/
+env.bak/
+venv.bak/
+meta_cwd_bmc/
 
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
-
-# Data (raw data should not be in git, but processed can be versioned)
-data/raw/*.xlsx
-data/raw/*.csv
-
-# Results (figures and tables can be versioned)
-# But keep the directories
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-!results/figures/.gitkeep
-!results/tables/.gitkeep
-!logs/.gitkeep
-
-# Logs
-logs/*.log
-logs/*.txt
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
-# IDE
-.vscode/
-.idea/
+# Logs
+*.log
+logs/*.log
+
+# Cache files
+*.cache
+*.json.bak
+*.pkl
+*.pickle
 
 # Temporary files
 *.tmp
+*.temp
+~$*
+
+# Large data files (optional - decide if you want to version them)
+# Uncomment if you DON'T want to version processed data
+# data/processed/*.csv
+# data/processed/*.png
+# data/processed/*.pdf
+
+# BUT keep baseline files for validation
+!data/processed/*_baseline.csv
+!data/processed/*_baseline.png
+
+# Keep cache files
+!data/processed/*_cache.json
+
+# Documentation builds
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Backup files
 *.bak
-*~
+*.backup
