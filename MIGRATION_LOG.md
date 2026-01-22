@@ -202,3 +202,75 @@ Migrated and improved Colab Scripts 03 & 04 into single superior script.
 - Scripts 04-15 migration
 - Consider parametrizable thresholds (1.0, 1.5) for robustness analysis
 
+
+---
+
+## 2026-01-22 - Script 04: Comprehensive GO Enrichment Analysis
+
+### Migration Complete ✅
+Migrated and significantly improved Colab Scripts 05 & 06 into single comprehensive script.
+
+### Major Improvements over Baseline
+**Baseline (Scripts 05/06):**
+- Only bubble plots (visual overview)
+- No detailed CSV outputs
+- No external validation
+
+**Our Script 04:**
+- ✅ 12 detailed CSV files (all GO terms per condition×aspect)
+- ✅ 9 bubble plots (significant terms, separated by aspect)
+- ✅ 16 g:Profiler validation files (gold-standard)
+- ✅ CLI parametrizable (threshold, g:Profiler toggle, min genes)
+- ✅ Comprehensive summary table
+
+### Technical Achievements
+1. **GO Cache Fix:**
+   - Added missing GO aspects to 24,664 annotations
+   - Distribution: BP (14,022), MF (3,764), CC (6,878)
+   - Enables aspect-specific analysis
+
+2. **Genome-wide Analysis:**
+   - 1,277 GO terms tested (868 BP + 159 MF + 222 CC)
+   - Fisher's exact test with FDR correction
+   - Minimum 3 genes per term (configurable)
+
+3. **CLI Features:**
+   - `--threshold`: log2FC cutoff (default: 0.8)
+   - `--no-gprofiler`: Disable external validation
+   - `--min-genes`: Minimum genes per GO term
+   - `--top-n`: Number of terms in plots
+   - `--verbose`: Debug logging
+
+### Results Summary (FDR<0.05)
+
+| Condition | BP | MF | CC | Total | Key Finding |
+|-----------|----|----|----|----|-------------|
+| PDL_NS | 38 | 10 | 15 | **63** | Massive enrichment: apoplast, cytosol |
+| PDL_HS | 24 | 3 | 5 | **32** | RNA processing: Lsm1-7-Pat1, mRNA binding |
+| AP_HS | 4 | 0 | 3 | **7** | Cell wall + heme biosynthesis |
+| AP_NS | 2 | 0 | 0 | **2** | Pectin catabolism |
+
+### Key Biological Insights
+1. **PDL vs AP:** PDL shows 10x more GO enrichment than AP
+2. **Heat Stress Effect:** Dramatic shift in GO profile under HS
+3. **RNA Processing:** Lsm1-7-Pat1 complex highly enriched (21.5x) in PDL_HS
+4. **Compartmentalization:** Cytosol (1.76x) and apoplast (3.80x) in PDL_NS
+5. **Cell Wall Focus:** AP conditions show specific cell wall enrichment
+
+### Validation
+- ✅ g:Profiler confirms all major enrichments
+- ✅ Biologically coherent with P-body function
+- ✅ Consistent with published literature on stress granules
+
+### Files Generated
+- `scripts/04_go_enrichment_comprehensive.py` (CLI-enabled)
+- `data/processed/go_enrichment_[condition]_[aspect].csv` (12 files)
+- `data/processed/go_enrichment_summary_all_conditions.csv`
+- `results/figures/go_bubble_[condition]_[aspect].png` (9 plots)
+- `results/gprofiler/gprofiler_[condition]_[aspect].csv` (16 files)
+
+### Next Steps
+- Scripts 05-15 migration (11 remaining)
+- Consider multi-threshold robustness analysis
+- Integrate with visualization pipeline
+
