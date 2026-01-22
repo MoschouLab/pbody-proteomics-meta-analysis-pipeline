@@ -39,7 +39,7 @@ Output:
     - data/processed/uniprot_annotation_cache.json
     - logs/02_fetch_protein_annotations.log
 
-Author: Pepe (migrated from Colab)
+Author: Moschou PN and Moya-Cuevas J (migrated from Colab)
 Date: 2026-01-21
 Version: 2.2 (clean, UniProt only, quality scoring, caching)
 """
