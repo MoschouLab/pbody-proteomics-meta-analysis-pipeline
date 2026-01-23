@@ -1,0 +1,11 @@
+gene_id,go_id,go_term,go_aspect,is_cell_wall
+AT1G08370,GO:0005737,cytoplasm,,False
+AT1G08370,GO:0005576,extracellular region,,False
+AT1G08370,GO:0000932,P-body,,False
+AT1G08370,GO:0008047,enzyme activator activity,,False
+AT1G08370,GO:0016787,hydrolase activity,,False
+AT1G08370,GO:0042803,protein homodimerization activity,,False
+AT1G08370,GO:0000290,deadenylation-dependent decapping of nuclear-transcribed mRNA,,False
+AT1G08370,GO:0031087,deadenylation-independent decapping of nuclear-transcribed mRNA,,False
+AT1G08370,GO:0006952,defense response,,False
+AT1G08370,GO:0006397,mRNA processing,,False
