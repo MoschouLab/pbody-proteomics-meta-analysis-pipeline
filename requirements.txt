@@ -41,3 +41,9 @@ matplotlib-venn==1.1.2
 
 # Network analysis (Script 05)
 networkx==3.4.2
+
+# Venn diagrams (Script 05)
+matplotlib-venn==1.1.2
+
+# Network analysis (Script 05)
+networkx==3.4.2
