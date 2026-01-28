@@ -1,0 +1,42 @@
+name: pbody_proteomics
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Core Python
+  - python=3.10
+  
+  # Scientific computing
+  - numpy=1.24.3
+  - pandas=2.0.3
+  - scipy=1.11.1
+  
+  # Statistical analysis
+  - statsmodels=0.14.0
+  
+  # Visualization
+  - matplotlib=3.10.8
+  - seaborn=0.12.2
+  - matplotlib-venn=1.1.2
+  
+  # Data handling
+  - openpyxl=3.1.2
+  
+  # Network analysis
+  - networkx=3.4.2
+  
+  # API requests
+  - requests=2.31.0
+  - urllib3=2.0.3
+  
+  # Progress bars
+  - tqdm=4.65.0
+  
+  # Utilities
+  - python-dateutil=2.8.2
+  - pytz=2023.3
+  
+  # Pip-only packages
+  - pip
+  - pip:
+    - gprofiler-official==1.0.0

@@ -97,3 +97,18 @@ htmlcov/
 # Backup files
 *.bak
 *.backup
+
+# Compressed archives
+*.zip
+
+# Large data files (can be re-downloaded)
+data/raw/3702.protein.links.v12.0.txt
+
+# Internal documents
+Manuscript_Review_*.md
+Table1_*.docx
+*_Review_*.md
+
+# Internal scripts
+prepare_github_repo.sh
+update_authorship.sh

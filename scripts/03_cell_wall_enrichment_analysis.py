@@ -17,7 +17,7 @@ Methodology:
     5. Calculate fold enrichment and FDR correction
     6. Generate visualizations (bubble plots)
 
-Key Improvements over Baseline:
+Script Strenghts:
     - Correct statistical background (GO-annotated genes only)
     - Proper GO aspect parsing using GoAspect property
     - Comprehensive cell wall definition (GO IDs + keywords)
@@ -37,9 +37,10 @@ Output:
     - results/figures/cell_wall_bubble_plot_[condition].png (4 files)
     - logs/03_cell_wall_enrichment_analysis.log
 
-Author: Moschou PN and Moya-Cuevas J (migrated from Colab)
+Postdoctoral Bioinformatician Author: Moya-Cuevas J
+Supervisor: Moschou PN
 Date: 2026-01-22
-Version: 3.0 (merged & improved from Scripts 03 & 04)
+Version: 3.0
 """
 
 import sys

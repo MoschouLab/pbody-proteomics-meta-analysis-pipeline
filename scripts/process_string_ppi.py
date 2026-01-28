@@ -3,7 +3,7 @@
 Process STRING PPI Data for Arabidopsis
 Converts UniProt IDs to AGI locus IDs and filters by confidence score
 
-Author: Pepe
+Postdoctoral Bioinformatician Author: Moya-Cuevas J
 Date: 2026-01-23
 """
 

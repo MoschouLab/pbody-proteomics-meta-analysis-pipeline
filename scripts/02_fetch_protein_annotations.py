@@ -12,7 +12,7 @@ Annotation Strategy (Two-tier):
     Tier 2: UniProt Unreviewed (TrEMBL) - Filtered by evidence level
     Tier 3: No annotation available - Keep gene ID only
 
-Improvements over Colab baseline:
+Script strenghts:
     - Smart isoform prioritization (canonical + quality scoring)
     - Multi-level gene matching (orderedLocusNames, synonyms, TAIR IDs)
     - Reviewed vs Unreviewed separation for quality control
@@ -39,7 +39,8 @@ Output:
     - data/processed/uniprot_annotation_cache.json
     - logs/02_fetch_protein_annotations.log
 
-Author: Moschou PN and Moya-Cuevas J (migrated from Colab)
+Postdoctoral Bioinformatician Author: Moya-Cuevas J
+Supervisor: Moschou PN
 Date: 2026-01-21
 Version: 2.2 (clean, UniProt only, quality scoring, caching)
 """

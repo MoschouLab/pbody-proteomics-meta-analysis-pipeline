@@ -27,7 +27,8 @@ Output:
     - results/gprofiler/ (optional, if g:Profiler enabled)
     - logs/04_go_enrichment_comprehensive.log
 
-Author: Moschou PN and Moya-Cuevas J
+Postdoctoral Bioinformatician Author: Moya-Cuevas J
+Supervisor: Moschou PN
 Date: 2026-01-22
 Version: 4.0 (comprehensive, CLI, g:Profiler)
 """

@@ -21,7 +21,8 @@ Output:
     - data/processed/pbody_proteomics_data.csv
     - logs/01_load_pbody_proteomics.log
 
-Author: Pepe (migrated from Colab)
+Postdoctoral Bioinformatician Author: Moya-Cuevas J.
+Supervisor: Moschou PN.
 Date: 2026-01-20
 Version: 1.1 (column search by name)
 """

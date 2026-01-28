@@ -14,8 +14,8 @@ Includes:
 - Comprehensive intersection gene lists
 - Publication-ready composite figures
 
-Author: Pepe (Lead Bioinformatics Postdoc)
-PI: Prof. Panagiotis Moschou
+Postdoctoral Bioinformatician Author: Moya-Cuevas J
+Supervisor: Moschou PN
 Project: PLANTEX ERC Consolidator Grant
 Institution: University of Crete, Greece
 Date: 2026-01-23
